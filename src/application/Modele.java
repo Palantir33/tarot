@@ -8,7 +8,7 @@ import javafx.beans.InvalidationListener;
 public class Modele extends java.util.Observable{
 	
 	private Vue vue;
-	private ArrayList<Carte> deckCarte = new ArrayList<>();
+	private ArrayList<Carte> paquetCarte = new ArrayList<>();
 	private ArrayList<Carte> chien = new ArrayList<>();
 	private ArrayList<Joueur> joueurs = new ArrayList<>();
 
@@ -24,5 +24,32 @@ public class Modele extends java.util.Observable{
 		joueurs.add(j2);
 		joueurs.add(j3);
 		joueurs.add(j4);
+	}
+	
+	public void initialiserPaquetCartes(){
+		for(int i = 0;i < vue.getImageCartes().size();i++)
+		{
+			Carte c = new Carte(vue.getPositionCarteX(), vue.getPositionCarteY(), vue.getImageCartes().get(i));
+			paquetCarte.add(c);
+		}
+		
+		melangerPaquetCartes();
+	}
+	
+	public void melangerPaquetCartes(){
+		Collections.shuffle(paquetCarte);
+	}
+	
+	public ArrayList<Carte> getChien(){
+		return chien;
+	}
+	
+	public ArrayList<Joueur> getJoueurs(){
+		return joueurs;
+	}
+	
+	public void setVue(Vue v)
+	{
+		this.vue = v;
 	}
 }
