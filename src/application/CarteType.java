@@ -1,5 +1,5 @@
 package application;
 
 public enum CarteType {
-	Carreau, Coeur, Pique, Trefle
+	Carreau, Coeur, Pique, Trefle, Atout
 }
