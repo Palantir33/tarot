@@ -23,7 +23,7 @@ public class Main extends Application{
 		
 		this.modele = new Modele();
 		this.vue = new Vue(this.modele);
-		modele.setVue(vue);
+		modele.addObserver(vue);
 		
 	}
 	
