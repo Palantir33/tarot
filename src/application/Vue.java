@@ -8,6 +8,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -29,6 +31,9 @@ public class Vue implements Observer{
 	
 	private Button quitter = new Button();
 	private Button distribution = new Button();
+	private int positionPaquetX;
+	private int positionPaquetY;
+	private ArrayList<ImageCarte> cartesVues = new ArrayList<>();
 
 	
 
@@ -43,30 +48,27 @@ public class Vue implements Observer{
 	{
 		initBouton();
 		initImage();
-		
+		modele=m;
 		fenetre.setTitle("Tarot - POIRIER - CREMERY - S3D");
 		fenetre.setScene(scene);
 		fenetre.sizeToScene();
+		
 		fenetre.show();
 			
 	}
 	
 	public void initImage()
 	{
-		this.imagesCartes.add(new ImageCarte("file:./res/ressources-100/excuse.jpg", CarteType.Atout));
-		
-		for(int i=1;i<22;i++)
-		{
-			this.imagesCartes.add(new ImageCarte("file:./res/ressources-100/"+i+".jpg",CarteType.Atout));
-		}
-		
-		for(int i=1;i<15;i++)
-		{
-			this.imagesCartes.add(new ImageCarte("file:./res/ressources-100/"+i+"Carreau.jpg",CarteType.Carreau));
-			this.imagesCartes.add(new ImageCarte("file:./res/ressources-100/"+i+"Coeur.jpg",CarteType.Coeur));
-			this.imagesCartes.add(new ImageCarte("file:./res/ressources-100/"+i+"Pique.jpg",CarteType.Pique));
-			this.imagesCartes.add(new ImageCarte("file:./res/ressources-100/"+i+"Trèfle.jpg",CarteType.Trefle));
-
+		for(int i=0;i<modele.getPaquetCartes().size();i++){
+			if(modele.getPaquetCartes().get(i).getType() == CarteType.Atout){
+				this.cartesVues.add(new ImageCarte(positionPaquetX,positionPaquetY,modele.getPaquetCartes().get(i),new ImageView("file:./ressources-100/" + modele.getPaquetCartes().get(i).getNumero() +".jpg")));
+			}
+			else if(modele.getPaquetCartes().get(i).getType() == CarteType.Excuse){
+				this.cartesVues.add(new ImageCarte(positionPaquetX, positionPaquetY, modele.getPaquetCartes().get(i),new ImageView("file:./ressources-100/excuse.jpg")));
+			}
+			else{
+				this.cartesVues.add(new ImageCarte(positionPaquetX, positionPaquetY, modele.getPaquetCartes().get(i),new ImageView("file:./ressources-100/"+modele.getPaquetCartes().get(i).getNumero()+modele.getPaquetCartes().get(i).getType()+".jpg")));
+			}
 		}
 	}
 	
@@ -84,22 +86,17 @@ public class Vue implements Observer{
 		
 		root.getChildren().add(distribution);
 		root.getChildren().add(quitter);
-		
-		
-		distribution.setOnAction(new EventHandler<ActionEvent>(){
-			@Override
-			public void handle(ActionEvent event){
-				//Faire distribution
-			}
-		});
-		
-		quitter.setOnAction(new EventHandler<ActionEvent>(){
-			@Override
-			public void handle(ActionEvent event){
-				System.exit(0);
-			}
-		});
 	}
+	
+	public ImageCarte assoCarteModeleVue(Carte c){
+		for(int j=0;j<cartesVues.size();j++){
+			if(cartesVues.get(j).getCarte().getNumero() == c.getNumero() && cartesVues.get(j).getCarte().getType() == c.getType()){
+				return cartesVues.get(j);
+			}
+		}
+		return null;
+	}
+	
 	
 	public ArrayList<ImageCarte> getImageCartes(){
 		return imagesCartes;		
@@ -119,6 +116,14 @@ public class Vue implements Observer{
 	
 	public int getPositionChienY(){
 		return positionChienY;
+	}
+	
+	public Button getQuitter(){
+		return quitter;
+	}
+	
+	public Button getDistribution(){
+		return distribution;
 	}
 	
 	public void setPositionCarteX(int positionCarteX){
