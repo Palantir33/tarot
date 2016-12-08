@@ -27,12 +27,21 @@ public class Modele extends java.util.Observable{
 	}
 	
 	public void initialiserPaquetCartes(){
-		for(int i = 0;i < vue.getImageCartes().size();i++)
+		
+		for(int i=1;i<=14;i++)
 		{
-			Carte c = new Carte(vue.getPositionCarteX(), vue.getPositionCarteY(), vue.getImageCartes().get(i));
-			paquetCarte.add(c);
+			paquetCarte.add(new Carte(CarteType.Carreau,i));
+			paquetCarte.add(new Carte(CarteType.Coeur,i));
+			paquetCarte.add(new Carte(CarteType.Pique,i));
+			paquetCarte.add(new Carte(CarteType.Trefle,i));
 		}
 		
+		for(int i=1;i <=21;i++)
+		{
+			paquetCarte.add(new Carte(CarteType.Atout, i));
+		}
+		
+		paquetCarte.add(new Carte(CarteType.Excuse,0));
 		melangerPaquetCartes();
 	}
 	
@@ -44,12 +53,13 @@ public class Modele extends java.util.Observable{
 		return chien;
 	}
 	
+	public ArrayList<Carte> getPaquetCartes(){
+		return paquetCarte;
+	}
+	
 	public ArrayList<Joueur> getJoueurs(){
 		return joueurs;
 	}
 	
-	public void setVue(Vue v)
-	{
-		this.vue = v;
-	}
+
 }
